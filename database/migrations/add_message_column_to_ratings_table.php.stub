@@ -1,0 +1,20 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class AddMessageColumnToRatingsTable extends Migration
+{
+    public function up()
+    {
+        Schema::table('ratings', function (Blueprint $table) {
+            $table->string('message')->nullable();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropColumns('ratings', ['message']);
+    }
+}

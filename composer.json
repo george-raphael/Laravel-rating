@@ -17,6 +17,11 @@
             "name": "Mohamed Nagy",
             "email": "mohamed.n.haleem@gmail.com",
             "role": "Developer"
+        },
+        {
+            "name": "George Kitula",
+            "email": "georgie817@mail.com",
+            "role": "Developer"
         }
     ],
     "require": {

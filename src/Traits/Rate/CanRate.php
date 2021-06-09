@@ -13,13 +13,13 @@ trait CanRate
         return $this->morphMany(Rating::class, 'model')->where('type', LaravelRating::TYPE_RATE);
     }
 
-    public function rate($model, $value)
+    public function rate($model, $value, $message = null)
     {
         if ($value === null || $value === false || $value === -1) {
             return $this->unRate($model);
         }
 
-        return LaravelRatingFacade::rate($this, $model, $value, LaravelRating::TYPE_RATE);
+        return LaravelRatingFacade::rate($this, $model, $value, LaravelRating::TYPE_RATE, $message);
     }
 
     public function unRate($model)

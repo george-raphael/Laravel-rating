@@ -10,14 +10,15 @@ class LaravelRating
     const TYPE_RATE = 'rate';
     const TYPE_VOTE = 'vote';
 
-    public function rate($user, $rateable, $value, $type)
+    public function rate($user, $rateable, $value, $type, $message = null)
     {
+        $data = $message ? ['value' => $value, 'message' => $message] : ['value' => $value];
         if ($this->isRated($user, $rateable, $type)) {
             return $user->{$this->resolveTypeRelation($type)}()
-                        ->where('rateable_id', $rateable->id)
-                        ->where('type', $type)
-                        ->where('rateable_type', $this->getRateableByClass($rateable))
-                        ->update(['value' => $value]);
+                ->where('rateable_id', $rateable->id)
+                ->where('type', $type)
+                ->where('rateable_type', $this->getRateableByClass($rateable))
+                ->update($data);
         }
 
         return $user->{$this->resolveTypeRelation($type)}()->create([
@@ -25,6 +26,7 @@ class LaravelRating
             'rateable_type' => $this->getRateableByClass($rateable),
             'value' => $value,
             'type' => $type,
+            'message' => $message,
         ]);
     }
 
@@ -32,10 +34,10 @@ class LaravelRating
     {
         if ($this->isRated($user, $rateable, $type)) {
             return $user->{$this->resolveTypeRelation($type)}()
-                        ->where('rateable_id', $rateable->id)
-                        ->where('type', $type)
-                        ->where('rateable_type', $this->getRateableByClass($rateable))
-                        ->delete();
+                ->where('rateable_id', $rateable->id)
+                ->where('type', $type)
+                ->where('rateable_type', $this->getRateableByClass($rateable))
+                ->delete();
         }
 
         return false;
@@ -44,10 +46,10 @@ class LaravelRating
     public function isRated($user, $rateable, $type)
     {
         $rating = $user->{$this->resolveTypeRelation($type)}()
-                        ->where('rateable_id', $rateable->id)
-                        ->where('rateable_type', $this->getRateableByClass($rateable))
-                        ->where('type', $type)
-                        ->first();
+            ->where('rateable_id', $rateable->id)
+            ->where('rateable_type', $this->getRateableByClass($rateable))
+            ->where('type', $type)
+            ->first();
 
         return $rating != null;
     }
@@ -55,10 +57,10 @@ class LaravelRating
     public function getRatingValue($user, $rateable, $type)
     {
         $rating = $user->{$this->resolveTypeRelation($type)}()
-                        ->where('rateable_id', $rateable->id)
-                        ->where('rateable_type', $this->getRateableByClass($rateable))
-                        ->where('type', $type)
-                        ->first();
+            ->where('rateable_id', $rateable->id)
+            ->where('rateable_type', $this->getRateableByClass($rateable))
+            ->where('type', $type)
+            ->first();
 
         return $rating != null ? $rating->value : null;
     }
@@ -66,9 +68,9 @@ class LaravelRating
     private function resolveTypeRelation($type)
     {
         $lookup = [
-              static::TYPE_LIKE => 'likes',
-              static::TYPE_RATE => 'ratings',
-              static::TYPE_VOTE => 'votes',
+            static::TYPE_LIKE => 'likes',
+            static::TYPE_RATE => 'ratings',
+            static::TYPE_VOTE => 'votes',
         ];
 
         return $lookup[$type];
