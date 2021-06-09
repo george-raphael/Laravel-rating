@@ -88,17 +88,6 @@ class LaravelRating
         return $collection;
     }
 
-    public function resolveRaters($ratings)
-    {
-        $collection = collect();
-
-        foreach ($ratings as $rating) {
-            $modelClass = $this->getModelTypeByKey($rating->model_type);
-            $collection->push((new $modelClass)->find($rating->model_id));
-        }
-
-        return $collection;
-    }
 
     private function getRateableByClass($rateable)
     {
@@ -117,13 +106,5 @@ class LaravelRating
         }
 
         return $rateable;
-    }
-    private function getModelTypeByKey($model)
-    {
-        if (array_key_exists($model, Relation::$morphMap)) {
-            $model = Relation::$morphMap[$model];
-        }
-
-        return $model;
     }
 }

@@ -21,8 +21,4 @@ trait Rateable
     {
         return $this->ratings()->count();
     }
-    public function raters()
-    {
-        return LaravelRatingFacade::resolveRaters($this->ratings);
-    }
 }

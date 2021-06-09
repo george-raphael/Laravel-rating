@@ -61,9 +61,9 @@ get the total count of ratings of a model
 ```php
 $post->ratingsCount();
 ```
-get the models (e.g Users) which rated this model (e.g Post)
+get the model (e.g User) which rated this model (e.g Post)
 ```php
-$post->raters();
+$post->rating->model;
 ```
 
 get the rated models by a user
