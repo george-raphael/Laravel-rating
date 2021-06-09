@@ -2,6 +2,7 @@
 
 namespace Nagy\LaravelRating\Traits\Rate;
 
+use Nagy\LaravelRating\LaravelRatingFacade;
 use Nagy\LaravelRating\Models\Rating;
 
 trait Rateable
@@ -19,5 +20,9 @@ trait Rateable
     public function ratingsCount()
     {
         return $this->ratings()->count();
+    }
+    public function raters()
+    {
+        return LaravelRatingFacade::resolveRaters($this->ratings);
     }
 }
